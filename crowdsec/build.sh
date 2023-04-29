@@ -4,7 +4,7 @@ DIR=$( cd "$( dirname "$0" )" && pwd )
 cd ${DIR}
 
 BUILD_DIR=${DIR}/../build/snap/crowdsec
-while ! docker create --name=crowdsec docker pull crowdsecurity/crowdsec:v1.5.0-rc5; do
+while ! docker create --name=crowdsec crowdsecurity/crowdsec:v1.5.0-rc5; do
   sleep 1
   echo "retry docker"
 done
