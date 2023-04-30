@@ -13,6 +13,5 @@ cd ${BUILD_DIR}
 docker export crowdsec -o crowdsec.tar
 tar xf crowdsec.tar
 rm -rf crowdsec.tar
-cp ${DIR}/crowdsec ${BUILD_DIR}/bin/
-ls -la ${BUILD_DIR}/bin
-rm -rf ${BUILD_DIR}/usr/src
+mkdir -p ${BUILD_DIR}/bin
+cp ${DIR}/usr/local/bin/crowdsec ${BUILD_DIR}/bin
