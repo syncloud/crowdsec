@@ -14,5 +14,3 @@ docker export syncloud -o syncloud.tar
 tar xf syncloud.tar
 rm -rf syncloud.tar
 cp ${DIR}/java.sh ${BUILD_DIR}/bin/
-${BUILD_DIR}/bin/java.sh --help
-
