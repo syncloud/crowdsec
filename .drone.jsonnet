@@ -2,7 +2,10 @@ local name = "crowdsec";
 local browser = "firefox";
 local go = "1.19.7-bullseye";
 local version = "1.5.0-rc5";
-local metabase_version = "0.46.2";
+local metabase = "0.46.2";
+local java = "19.0.2_7";
+local nginx = "1.24.0";
+local go = "1.18.2-buster";
 
 local build(arch, test_ui, dind) = [{
     kind: "pipeline",
@@ -21,6 +24,32 @@ local build(arch, test_ui, dind) = [{
             ]
         },
         {
+            name: "build java",
+            image: "docker:" + dind,
+                commands: [
+                "./java/build.sh " + java
+            ],
+            volumes: [
+                {
+                    name: "dockersock",
+                    path: "/var/run"
+                }
+            ]
+        },
+        {
+            name: "build nginx",
+            image: "docker:" + dind,
+                commands: [
+                "./nginx/build.sh " + nginx
+            ],
+            volumes: [
+                {
+                    name: "dockersock",
+                    path: "/var/run"
+                }
+            ]
+        },
+        {
             name: "build crowdsec",
             image: "docker:" + dind,
             commands: [
@@ -33,13 +62,22 @@ local build(arch, test_ui, dind) = [{
                 }
             ]
         },
-	{
+        {
             name: "build metabase",
             image: "debian:bister-slim",
             commands: [
-	        "./metabase/build.sh " + metabase_version
-	    ]
-	},
+                "./metabase/build.sh " + metabase
+            ]
+        },
+        {
+            name: "build hooks",
+            image: "golang:" + go,
+            commands: [
+                "cd hooks",
+                "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/meta/hooks/install ./cmd/install",
+                "../build/snap/meta/hooks/install -h"
+            ]
+        },
         {
             name: "package",
             image: "debian:buster-slim",
