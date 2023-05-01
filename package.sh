@@ -18,9 +18,8 @@ apt update
 apt -y install squashfs-tools
 
 cp -r ${DIR}/bin ${SNAP_DIR}
-#cp -r ${DIR}/config ${SNAP_DIR}
-mkdir $SNAP_DIR/meta
-cp  ${DIR}/snap.yaml ${SNAP_DIR}/meta
+cp -r ${DIR}/config ${SNAP_DIR}
+cp ${DIR}/snap.yaml ${SNAP_DIR}/meta
 
 echo "version: $VERSION" >> ${SNAP_DIR}/meta/snap.yaml
 echo "architectures:" >> ${SNAP_DIR}/meta/snap.yaml
@@ -32,3 +31,4 @@ echo ${PACKAGE} > ${DIR}/package.name
 mksquashfs ${SNAP_DIR} ${DIR}/${PACKAGE} -noappend -comp xz -no-xattrs -all-root
 mkdir ${DIR}/artifact
 cp ${DIR}/${PACKAGE} ${DIR}/artifact
+
