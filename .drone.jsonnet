@@ -64,7 +64,7 @@ local build(arch, test_ui, dind) = [{
         },
         {
             name: "build metabase",
-            image: "debian:buster-slim",
+            image: "alpine:3.17.3",
             commands: [
                 "./metabase/build.sh " + metabase
             ]
