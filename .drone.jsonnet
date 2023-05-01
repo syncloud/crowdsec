@@ -1,7 +1,8 @@
 local name = "crowdsec";
 local browser = "firefox";
 local go = "1.19.7-bullseye";
-local version = "0.11.1";
+local version = "1.5.0-rc5";
+local metabase_version = "0.46.2";
 
 local build(arch, test_ui, dind) = [{
     kind: "pipeline",
@@ -23,7 +24,7 @@ local build(arch, test_ui, dind) = [{
             name: "build crowdsec",
             image: "docker:" + dind,
             commands: [
-                "./crowdsec/build.sh"
+                "./crowdsec/build.sh " + version
             ],
             volumes: [
                 {
@@ -32,6 +33,13 @@ local build(arch, test_ui, dind) = [{
                 }
             ]
         },
+	{
+            name: "build metabase",
+            image: "debian:bister-slim",
+            commands: [
+	        "./metabase/build.sh " + metabase_version
+	    ]
+	},
         {
             name: "package",
             image: "debian:buster-slim",
