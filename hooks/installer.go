@@ -8,5 +8,6 @@ func New() *Installer {
 }
 
 func (i *Installer) Install() error {
+
 	return nil
 }
