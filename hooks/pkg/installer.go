@@ -1,5 +1,8 @@
-package hooks
+package pkg
 
+const (
+	App = "crowdsec"
+)
 
 type Installer struct {
 }
@@ -9,6 +12,11 @@ func New() *Installer {
 }
 
 func (i *Installer) Install() error {
+	err := CreateUser(App)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
