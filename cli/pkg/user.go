@@ -24,6 +24,7 @@ func createUser(username string) error {
 		"-s", "/bin/false",
 		"-m",
 		"-d", fmt.Sprintf("/home/%s", username),
+		username,
 	)
 	output, err := command.CombinedOutput()
 	if err != nil {
