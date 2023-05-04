@@ -78,7 +78,7 @@ local build(arch, test_ui, dind) = [{
                 "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/meta/hooks/configure ./cmd/configure",
                 "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/meta/hooks/pre-refresh ./cmd/pre-refresh",
                 "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/meta/hooks/post-refresh ./cmd/post-refresh",
-                "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/meta/hooks/cli ./cmd/cli",
+                "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/bin/cli ./cmd/cli",
             ]
         },
         {
