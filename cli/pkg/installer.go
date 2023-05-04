@@ -1,5 +1,9 @@
 package pkg
 
+import (
+ cp "github.com/otiai10/copy"
+)
+
 const (
 	App = "crowdsec"
 )
@@ -16,7 +20,10 @@ func (i *Installer) Install() error {
 	if err != nil {
 		return err
 	}
-
+ err = cp.Copy("/snap/crowdsec/current/config", "/var/snap/crowdsec/current/config")
+ if err != nil {
+		return err
+	}
 	return nil
 }
 

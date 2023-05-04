@@ -5,7 +5,7 @@ common:
   log_level: info
   working_dir: .
 config_paths:
-  config_dir: /var/snap/crowdsec/current/config/
+  config_dir: /var/snap/crowdsec/current/config
   data_dir: /var/snap/crowdsec/current/data/
   simulation_path: /var/snap/crowdsec/current/simulation.yaml
   hub_dir: /var/snap/crowdsec/current/hub/
@@ -63,8 +63,8 @@ api:
 #       - bouncers_ou
 #      crl_path: /path/to/file.crl
 #      cache_expiration: 1h
-prometheus:
-  enabled: true
-  level: full
-  listen_addr: 127.0.0.1
-  listen_port: 6060
+#prometheus:
+#  enabled: true
+#  level: full
+#  listen_addr: 127.0.0.1
+#  listen_port: 6060
