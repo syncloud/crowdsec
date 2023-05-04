@@ -3,11 +3,10 @@ local browser = "firefox";
 local go = "1.19.7-bullseye";
 local version = "1.5.0-rc5";
 local metabase = "0.46.2";
-local java = "19.0.2_7";
 local nginx = "1.24.0";
 local go = "1.18.2-buster";
 
-local build(arch, test_ui, dind) = [{
+local build(arch, test_ui, dind, java_arch) = [{
     kind: "pipeline",
     type: "docker",
     name: arch,
@@ -25,16 +24,10 @@ local build(arch, test_ui, dind) = [{
         },
         {
             name: "build java",
-            image: "docker:" + dind,
+            image: "debian:buster-slim",
                 commands: [
-                "./java/build.sh " + java
+                "./java/build.sh " + java_arch
             ],
-            volumes: [
-                {
-                    name: "dockersock",
-                    path: "/var/run"
-                }
-            ]
         },
         {
             name: "build nginx",
@@ -70,10 +63,10 @@ local build(arch, test_ui, dind) = [{
             ]
         },
         {
-            name: "build hooks",
+            name: "build cli",
             image: "golang:" + go,
             commands: [
-                "cd hooks",
+                "cd cli",
                 "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/meta/hooks/install ./cmd/install",
                 "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/meta/hooks/configure ./cmd/configure",
                 "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/meta/hooks/pre-refresh ./cmd/pre-refresh",
@@ -293,6 +286,6 @@ local build(arch, test_ui, dind) = [{
       }
   }];
 
-build("amd64", true, "20.10.21-dind") +
-build("arm64", false, "19.03.8-dind") +
-build("arm", false, "19.03.8-dind")
+build("amd64", true, "20.10.21-dind", "x64") +
+build("arm64", false, "19.03.8-dind", "aarch64") +
+build("arm", false, "19.03.8-dind", "arm")

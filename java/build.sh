@@ -2,15 +2,9 @@
 
 DIR=$( cd "$( dirname "$0" )" && pwd )
 cd ${DIR}
-VERSION=$1
-BUILD_DIR=${DIR}/../build/snap/java
-while ! docker create --name=java eclipse-temurin:$VERSION-jre; do
-  sleep 1
-  echo "retry docker"
-done
+ARCH=$1
+BUILD_DIR=${DIR}/../build/snap/java 
+wget https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jre_${ARCH}_linux_hotspot_19.0.2_7.tar.gz -O jre.tar.gz
+tar xf jre.tar.gz
 mkdir -p ${BUILD_DIR}
-cd ${BUILD_DIR}
-docker export java -o app.tar
-tar xf app.tar
-rm -rf app.tar
-cp ${DIR}/java.sh ${BUILD_DIR}/bin/
+mv jdk* ${BUILD_DIR}/java
