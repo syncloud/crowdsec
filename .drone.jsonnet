@@ -24,7 +24,7 @@ local build(arch, test_ui, dind, java_arch) = [{
         },
         {
             name: "build java",
-            image: "debian:buster-slim",
+            image: "alpine:3.17.3",
                 commands: [
                 "./java/build.sh " + java_arch
             ],
