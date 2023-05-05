@@ -3,7 +3,7 @@
 DIR=$( cd "$( dirname "$0" )" && pwd )
 cd ${DIR}
 VERSION=$1
-BUILD_DIR=${DIR}/../build/snap/java
+BUILD_DIR=${DIR}/../build/snap/nginx
 while ! docker create --name=nginx nginx:$VERSION ; do
   sleep 1
   echo "retry docker"
