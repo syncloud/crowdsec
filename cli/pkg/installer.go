@@ -1,11 +1,14 @@
 package pkg
 
 import (
- cp "github.com/otiai10/copy"
+	cp "github.com/otiai10/copy"
+	"path"
 )
 
 const (
-	App = "crowdsec"
+	App     = "crowdsec"
+	AppDir  = "/snap/crowdsec/current"
+	DataDir = "/var/snap/crowdsec/current"
 )
 
 type Installer struct {
@@ -20,10 +23,16 @@ func (i *Installer) Install() error {
 	if err != nil {
 		return err
 	}
- err = cp.Copy("/snap/crowdsec/current/config", "/var/snap/crowdsec/current/config")
- if err != nil {
+	err = cp.Copy(path.Join(AppDir, "config"), path.Join(DataDir))
+	if err != nil {
 		return err
 	}
+
+	err = cp.Copy(path.Join(AppDir, "metabase/metabase.db"), path.Join(DataDir))
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
