@@ -13,7 +13,7 @@ config_paths:
   notification_dir: /var/snap/crowdsec/current/notifications/
   plugin_dir: /var/snap/crowdsec/current/plugins/
 crowdsec_service:
-  acquisition_path: /var/snap/crowdsec/current/acquis.yaml
+  acquisition_path: /snap/crowdsec/current/config/acquisition.yaml
   #acquisition_dir: /etc/crowdsec/acquis/
   parser_routines: 1
   buckets_routines: 1
