@@ -37,7 +37,7 @@ func Chown(dir, username string) error {
 	command := exec.Command("chown",
 		"-R",
 		fmt.Sprintf("%s:%s", username, username),
-		dir,
+		fmt.Sprintf("%s/", dir),
 	)
 	output, err := command.CombinedOutput()
 	if err != nil {
