@@ -23,7 +23,7 @@ func (i *Installer) Install() error {
 	if err != nil {
 		return err
 	}
-	err = cp.Copy(path.Join(AppDir, "config"), path.Join(DataDir))
+	err = cp.Copy(path.Join(AppDir, "config"), path.Join(DataDir, "config"))
 	if err != nil {
 		return err
 	}
