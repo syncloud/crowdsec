@@ -43,15 +43,15 @@ db_config:
 api:
   client:
     insecure_skip_verify: false
-    credentials_path: /etc/crowdsec/local_api_credentials.yaml
+    credentials_path: /var/snap/crowdsec/current/config/local_api_credentials.yaml
   server:
     log_level: info
     listen_uri: 127.0.0.1:8080
-    profiles_path: /etc/crowdsec/profiles.yaml
+    profiles_path: /var/snap/crowdsec/current/config/profiles.yaml
     use_forwarded_for_headers: false
-    console_path: /etc/crowdsec/console.yaml
+    console_path: /var/snap/crowdsec/current/config/console.yaml
     online_client: # Crowdsec API
-      credentials_path: /etc/crowdsec/online_api_credentials.yaml
+      credentials_path: /var/snap/crowdsec/current/config/online_api_credentials.yaml
 #    tls:
 #      cert_file: /etc/crowdsec/ssl/cert.pem
 #      key_file: /etc/crowdsec/ssl/key.pem
