@@ -1,5 +1,6 @@
 apps:
   nginx:
+    user: crowdsec
     command: bin/service.nginx.sh
     daemon: simple
     plugs:
@@ -8,6 +9,7 @@ apps:
     restart-condition: always
 
   metabase:
+    user: crowdsec
     command: bin/service.metabase.sh
     daemon: simple
     plugs:
@@ -16,6 +18,7 @@ apps:
     restart-condition: always
 
   crowdsec:
+    user: crowdsec
     command: bin/service.crowdsec.sh
     daemon: simple
     plugs:

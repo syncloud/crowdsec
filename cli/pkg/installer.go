@@ -32,7 +32,10 @@ func (i *Installer) Install() error {
 	if err != nil {
 		return err
 	}
-
+	err = Chown(DataDir, App)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

@@ -32,3 +32,16 @@ func createUser(username string) error {
 	}
 	return nil
 }
+
+func Chown(dir, username string) error {
+	command := exec.Command("chown",
+		"-R",
+		fmt.Sprintf("%s:%s", username, username),
+		dir,
+	)
+	output, err := command.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("%w: %s", err, string(output))
+	}
+	return nil
+}
