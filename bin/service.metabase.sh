@@ -10,5 +10,6 @@ MB_LDAP_BIND_DN="cn=admin,dc=syncloud,dc=org"
 MB_LDAP_PASSWORD=syncloud
 MB_LDAP_USER_BASE="ou=users,dc=syncloud,dc=org"
 MB_LDAP_USER_FILTER="(&(objectClass=inetOrgPerson)(cn={login}))"
+MB_JETTY_PORT=3001
 export PATH=$PATH:${DIR}/java/bin
 exec ${DIR}/java/bin/java -jar /snap/crowdsec/current/metabase/metabase.jar
