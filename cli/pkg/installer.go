@@ -3,14 +3,16 @@ package pkg
 import (
 	"fmt"
 	cp "github.com/otiai10/copy"
+	"os"
 	"os/exec"
 	"path"
 )
 
 const (
-	App     = "crowdsec"
-	AppDir  = "/snap/crowdsec/current"
-	DataDir = "/var/snap/crowdsec/current"
+	App       = "crowdsec"
+	AppDir    = "/snap/crowdsec/current"
+	DataDir   = "/var/snap/crowdsec/current"
+	CommonDir = "/var/snap/crowdsec/common"
 )
 
 type Installer struct {
@@ -39,6 +41,11 @@ func (i *Installer) Install() error {
 		return err
 	}
 
+	err = os.Mkdir(path.Join(CommonDir, "nginx"), 0755)
+	if err != nil {
+		return err
+	}
+
 	command := exec.Command("snap",
 		"run",
 		"crowdsec.cscli",
@@ -51,6 +58,10 @@ func (i *Installer) Install() error {
 	}
 
 	err = Chown(DataDir, App)
+	if err != nil {
+		return err
+	}
+	err = Chown(CommonDir, App)
 	if err != nil {
 		return err
 	}
