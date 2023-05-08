@@ -19,7 +19,7 @@ apt -y install squashfs-tools wget
 
 cp -r ${DIR}/bin ${SNAP_DIR}
 mkdir ${SNAP_DIR}/config
-cp -r $DIR/crowdsec/staging/etc/crowdsec -O ${SNAP_DIR}/config
+cp -r $DIR/crowdsec/staging/etc/crowdsec ${SNAP_DIR}/config
 cp -r ${DIR}/config ${SNAP_DIR}
 cp ${DIR}/snap.yaml ${SNAP_DIR}/meta
 
