@@ -32,6 +32,11 @@ func (i *Installer) Install() error {
 	if err != nil {
 		return err
 	}
+	err = cp.Copy(path.Join(AppDir, "crowdsec/staging/var/lib/crowdsec/data"), path.Join(DataDir, "data"))
+	if err != nil {
+		return err
+	}
+
 	err = Chown(DataDir, App)
 	if err != nil {
 		return err
