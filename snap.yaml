@@ -41,6 +41,9 @@ apps:
   restore-post-start:
     command: bin/cli restore-post-start
 
+  cscli:
+    command: crowdsec/usr/local/bin/cscli
+
 confinement: strict
 description: Crowdsec
 grade: stable

@@ -1,7 +1,9 @@
 package pkg
 
 import (
+	"fmt"
 	cp "github.com/otiai10/copy"
+	"os/exec"
 	"path"
 )
 
@@ -35,6 +37,17 @@ func (i *Installer) Install() error {
 	err = cp.Copy(path.Join(AppDir, "crowdsec/staging/var/lib/crowdsec/data"), path.Join(DataDir, "data"))
 	if err != nil {
 		return err
+	}
+
+	command := exec.Command("snap",
+		"run",
+		"crowdsec.cscli",
+		"-c", path.Join(DataDir, "config/crowdsec/config.yaml"),
+		"mashines", "add", "-a",
+	)
+	output, err := command.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("%w: %s", err, string(output))
 	}
 
 	err = Chown(DataDir, App)
