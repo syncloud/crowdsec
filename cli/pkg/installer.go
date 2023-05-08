@@ -43,7 +43,7 @@ func (i *Installer) Install() error {
 		"run",
 		"crowdsec.cscli",
 		"-c", path.Join(DataDir, "config/crowdsec/config.yaml"),
-		"mashines", "add", "-a",
+		"machines", "add", "-a",
 	)
 	output, err := command.CombinedOutput()
 	if err != nil {
