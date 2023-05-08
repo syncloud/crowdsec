@@ -3,17 +3,17 @@ common:
   pid_dir: /var/snap/crowdsec/current/
   log_media: stdout
   log_level: info
-  working_dir: .
+  working_dir: /var/snap/crowdsec/current
 config_paths:
-  config_dir: /snap/crowdsec/current/crowdsec/staging/etc/crowdsec
+  config_dir: /var/snap/crowdsec/current/config/crowdsec
   data_dir: /var/snap/crowdsec/current/data/
-  simulation_path: /var/snap/crowdsec/current/config/simulation.yaml
-  hub_dir: /var/snap/crowdsec/current/config/hub/
-  index_path: /var/snap/crowdsec/current/config/hub/.index.json
-  notification_dir: /var/snap/crowdsec/current/notifications/
+  simulation_path: /var/snap/crowdsec/current/config/crowdsec/simulation.yaml
+  hub_dir: /var/snap/crowdsec/current/config/crowdsec/hub/
+  index_path: /var/snap/crowdsec/current/config/crowdsec/hub/.index.json
+  notification_dir: /var/snap/crowdsec/current/crowdsec/notifications/
   plugin_dir: /var/snap/crowdsec/current/plugins/
 crowdsec_service:
-  acquisition_path: /snap/crowdsec/current/config/acquisition.yaml
+  acquisition_path: /snap/crowdsec/current/config/crowdsec/acquisition.yaml
   #acquisition_dir: /etc/crowdsec/acquis/
   parser_routines: 1
   buckets_routines: 1
@@ -43,15 +43,15 @@ db_config:
 api:
   client:
     insecure_skip_verify: false
-    credentials_path: /var/snap/crowdsec/current/config/local_api_credentials.yaml
+    credentials_path: /var/snap/crowdsec/current/config/crowdsec/local_api_credentials.yaml
   server:
     log_level: info
     listen_uri: 127.0.0.1:8080
-    profiles_path: /var/snap/crowdsec/current/config/profiles.yaml
+    profiles_path: /var/snap/crowdsec/current/config/crowdsec/profiles.yaml
     use_forwarded_for_headers: false
-    console_path: /var/snap/crowdsec/current/config/console.yaml
+    console_path: /var/snap/crowdsec/current/config/crowdsec/console.yaml
     online_client: # Crowdsec API
-      credentials_path: /var/snap/crowdsec/current/config/online_api_credentials.yaml
+      credentials_path: /var/snap/crowdsec/current/config/crowdsec/online_api_credentials.yaml
 #    tls:
 #      cert_file: /etc/crowdsec/ssl/cert.pem
 #      key_file: /etc/crowdsec/ssl/key.pem

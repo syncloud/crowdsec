@@ -18,8 +18,9 @@ apt update
 apt -y install squashfs-tools wget
 
 cp -r ${DIR}/bin ${SNAP_DIR}
+mkdir ${SNAP_DIR}/config
+cp -r $DIR/crowdsec/staging/etc/crowdsec -O ${SNAP_DIR}/config
 cp -r ${DIR}/config ${SNAP_DIR}
-wget https://hub-cdn.crowdsec.net/master/.index.json -O ${SNAP_DIR}/config/hub/.index.json
 cp ${DIR}/snap.yaml ${SNAP_DIR}/meta
 
 echo "version: $VERSION" >> ${SNAP_DIR}/meta/snap.yaml
