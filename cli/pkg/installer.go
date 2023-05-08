@@ -27,6 +27,11 @@ func (i *Installer) Install() error {
 	if err != nil {
 		return err
 	}
+	err = AddUserToGroup(App, "systemd-journal")
+	if err != nil {
+		return err
+	}
+
 	err = cp.Copy(path.Join(AppDir, "config"), path.Join(DataDir, "config"))
 	if err != nil {
 		return err

@@ -33,6 +33,17 @@ func createUser(username string) error {
 	return nil
 }
 
+func AddUserToGroup(username, group string) error {
+	command := exec.Command("/usr/sbin/adduser",
+		username, group,
+	)
+	output, err := command.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("%w: %s", err, string(output))
+	}
+	return nil
+}
+
 func Chown(dir, username string) error {
 	command := exec.Command("chown",
 		"-R",
