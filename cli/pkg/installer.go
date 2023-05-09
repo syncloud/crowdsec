@@ -50,7 +50,10 @@ func (i *Installer) Install() error {
 	if err != nil {
 		return err
 	}
-
+	err = os.Mkdir(path.Join(CommonDir, "log"), 0755)
+	if err != nil {
+		return err
+	}
 	command := exec.Command("snap",
 		"run",
 		"crowdsec.cscli",
