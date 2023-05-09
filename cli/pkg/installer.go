@@ -16,10 +16,15 @@ const (
 )
 
 type Installer struct {
+	NewVersionFile     string
+	CurrentVersionFile string
 }
 
 func New() *Installer {
-	return &Installer{}
+	return &Installer{
+		NewVersionFile:     path.Join(AppDir, "version"),
+		CurrentVersionFile: path.Join(DataDir, "version"),
+	}
 }
 
 func (i *Installer) Install() error {
@@ -77,7 +82,7 @@ func (i *Installer) Install() error {
 }
 
 func (i *Installer) Configure() error {
-	return nil
+	return i.UpdateVersion()
 }
 
 func (i *Installer) PreRefresh() error {
@@ -85,5 +90,13 @@ func (i *Installer) PreRefresh() error {
 }
 
 func (i *Installer) PostRefresh() error {
-	return nil
+	return i.ClearVersion()
+}
+
+func (i *Installer) ClearVersion() error {
+	return os.RemoveAll(i.CurrentVersionFile)
+}
+
+func (i *Installer) UpdateVersion() error {
+	return cp.Copy(i.NewVersionFile, i.CurrentVersionFile)
 }
