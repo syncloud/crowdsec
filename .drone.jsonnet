@@ -1,9 +1,12 @@
 local name = "crowdsec";
 local browser = "firefox";
 local go = "1.19.7-bullseye";
-local version = "0.11.1";
+local version = "1.5.0-rc5";
+local metabase = "0.46.2";
+local nginx = "1.24.0";
+local go = "1.18.2-buster";
 
-local build(arch, test_ui, dind) = [{
+local build(arch, test_ui, dind, java_arch) = [{
     kind: "pipeline",
     type: "docker",
     name: arch,
@@ -20,16 +23,55 @@ local build(arch, test_ui, dind) = [{
             ]
         },
         {
-            name: "build crowdsec",
+            name: "build java",
+            image: "alpine:3.17.3",
+                commands: [
+                "./java/build.sh " + java_arch
+            ],
+        },
+        {
+            name: "build nginx",
             image: "docker:" + dind,
-            commands: [
-                "./crowdsec/build.sh"
+                commands: [
+                "./nginx/build.sh " + nginx
             ],
             volumes: [
                 {
                     name: "dockersock",
                     path: "/var/run"
                 }
+            ]
+        },
+        {
+            name: "build crowdsec",
+            image: "docker:" + dind,
+            commands: [
+                "./crowdsec/build.sh " + version
+            ],
+            volumes: [
+                {
+                    name: "dockersock",
+                    path: "/var/run"
+                }
+            ]
+        },
+        {
+            name: "build metabase",
+            image: "alpine:3.17.3",
+            commands: [
+                "./metabase/build.sh " + metabase
+            ]
+        },
+        {
+            name: "build cli",
+            image: "golang:" + go,
+            commands: [
+                "cd cli",
+                "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/meta/hooks/install ./cmd/install",
+                "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/meta/hooks/configure ./cmd/configure",
+                "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/meta/hooks/pre-refresh ./cmd/pre-refresh",
+                "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/meta/hooks/post-refresh ./cmd/post-refresh",
+                "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/bin/cli ./cmd/cli",
             ]
         },
         {
@@ -244,6 +286,6 @@ local build(arch, test_ui, dind) = [{
       }
   }];
 
-build("amd64", true, "20.10.21-dind") +
-build("arm64", false, "19.03.8-dind") +
-build("arm", false, "19.03.8-dind")
+build("amd64", true, "20.10.21-dind", "x64") +
+build("arm64", false, "19.03.8-dind", "aarch64") +
+build("arm", false, "19.03.8-dind", "arm")
