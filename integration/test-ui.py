@@ -28,9 +28,8 @@ def test_start(module_setup, app, domain, device_host):
 
 def test_login(selenium, device_user, device_password):
     selenium.open_app()
-    selenium.find_by_xpath("//div[text()='Sign In']").click()
-    selenium.find_by_id("mx_LoginForm_username").send_keys(device_user)
-    password = selenium.find_by_id("mx_LoginForm_password")
+    selenium.find_by_xpath("//input[@name='username']").send_keys(device_user)
+    password = selenium.find_by_xpath("//input[@name='password']")
     password.send_keys(device_password)
     selenium.screenshot('login')
     password.send_keys(Keys.RETURN)
