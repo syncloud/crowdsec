@@ -33,7 +33,7 @@ def test_login(selenium, device_user, device_password):
     password.send_keys(device_password)
     selenium.screenshot('login')
     password.send_keys(Keys.RETURN)
-    selenium.find_by_xpath("//span[contains(.,'Welcome user')]")
+    selenium.find_by_xpath("//div[contains(.,'CS Dashboard')]")
     selenium.screenshot('main')
 
 
