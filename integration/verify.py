@@ -8,7 +8,6 @@ from subprocess import check_output
 from syncloudlib.integration.hosts import add_host_alias
 from syncloudlib.integration.installer import local_install
 from syncloudlib.http import wait_for_rest
-from integration.util.helper import retry_func
 
 TMP_DIR = '/tmp/syncloud'
 
