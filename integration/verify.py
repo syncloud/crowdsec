@@ -8,6 +8,7 @@ from subprocess import check_output
 from syncloudlib.integration.hosts import add_host_alias
 from syncloudlib.integration.installer import local_install
 from syncloudlib.http import wait_for_rest
+from integration.util.helper import retry_func
 
 TMP_DIR = '/tmp/syncloud'
 
@@ -50,7 +51,7 @@ def test_start(module_setup, device, device_host, app, domain):
 
 
 def test_activate_device(device):
-    response = device.activate_custom()
+    response = retry(device.activate_custom())
     assert response.status_code == 200, response.text
 
 
@@ -92,3 +93,17 @@ def test_upgrade(app_archive_path, device_host, device_password):
 
 def test_index_after_upgrade(app_domain):
     wait_for_rest(requests.session(), "https://{0}".format(app_domain), 200, 100)
+
+
+def retry(method, retries=10):
+    attempt = 0
+    exception = None
+    while attempt < retries:
+        try:
+            return method()
+        except Exception as e:
+            exception = e
+            print('error (attempt {0}/{1}): {2}'.format(attempt + 1, retries, str(e)))
+            time.sleep(5)
+        attempt += 1
+    raise exception
