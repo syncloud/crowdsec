@@ -13,14 +13,13 @@ config_paths:
   notification_dir: /var/snap/crowdsec/current/crowdsec/notifications/
   plugin_dir: /var/snap/crowdsec/current/plugins/
 crowdsec_service:
-  acquisition_path: /snap/crowdsec/current/config/crowdsec/acquisition.yaml
-  #acquisition_dir: /etc/crowdsec/acquis/
+  acquisition_path: /snap/crowdsec/current/config/crowdsec/acquis.yaml
+  acquisition_dir: /snap/crowdsec/current/config/crowdsec/acquis.d
   parser_routines: 1
   buckets_routines: 1
   output_routines: 1
 cscli:
   output: human
-  hub_branch: wip_lapi
 db_config:
   log_level: info
   type: sqlite
