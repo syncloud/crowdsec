@@ -69,11 +69,7 @@ func (i *Installer) Install() error {
 		return fmt.Errorf("%w: %s", err, string(output))
 	}
 
-	err = Chown(DataDir, App)
-	if err != nil {
-		return err
-	}
-	err = Chown(CommonDir, App)
+	err = i.FixPermissions()
 	if err != nil {
 		return err
 	}
@@ -94,7 +90,17 @@ func (i *Installer) PostRefresh() error {
 		return err
 	}
 
-	return i.ClearVersion()
+	err = i.ClearVersion()
+	if err != nil {
+		return err
+	}
+
+	err = i.FixPermissions()
+	if err != nil {
+		return err
+	}
+	return nil
+
 }
 
 func (i *Installer) ClearVersion() error {
@@ -107,4 +113,16 @@ func (i *Installer) UpdateVersion() error {
 
 func (i *Installer) UpdateConfigs() error {
 	return cp.Copy(path.Join(AppDir, "config"), path.Join(DataDir, "config"))
+}
+
+func (i *Installer) FixPermissions() error {
+	err := Chown(DataDir, App)
+	if err != nil {
+		return err
+	}
+	err = Chown(CommonDir, App)
+	if err != nil {
+		return err
+	}
+	return nil
 }
