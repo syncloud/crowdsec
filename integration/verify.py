@@ -82,7 +82,7 @@ def test_hub_update(device):
 
 
 def test_hub_install(device):
-    device.run_ssh('snap run crowdsec.cscli -c /var/snap/crowdsec/current/config/crowdsec/config.yaml hub collections install crowdsecurity/dovecot')
+    device.run_ssh('snap run crowdsec.cscli -c /var/snap/crowdsec/current/config/crowdsec/config.yaml collections install crowdsecurity/dovecot')
 
 
 def test_hub_list(device):
