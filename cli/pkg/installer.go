@@ -41,6 +41,11 @@ func (i *Installer) Install() error {
 	if err != nil {
 		return err
 	}
+
+err = cp.Copy(path.Join(DataDir, "config/crowdsec/local_api_credentials.yaml.template"), path.Join(DataDir, "config/crowdsec/local_api_credentials.yaml"))
+	if err != nil {
+		return err
+	}
 	err = cp.Copy(path.Join(AppDir, "metabase/metabase.db"), path.Join(DataDir))
 	if err != nil {
 		return err
@@ -90,11 +95,6 @@ func (i *Installer) PostRefresh() error {
 	}
 
 	err = i.ClearVersion()
-	if err != nil {
-		return err
-	}
-
-	err = i.AddMachines()
 	if err != nil {
 		return err
 	}
