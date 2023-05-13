@@ -37,11 +37,10 @@ func (i *Installer) Install() error {
 		return err
 	}
 
-	err = cp.Copy(path.Join(AppDir, "config"), path.Join(DataDir, "config"))
+	err = i.UpdateConfigs()
 	if err != nil {
 		return err
 	}
-
 	err = cp.Copy(path.Join(AppDir, "metabase/metabase.db"), path.Join(DataDir))
 	if err != nil {
 		return err
@@ -90,6 +89,11 @@ func (i *Installer) PreRefresh() error {
 }
 
 func (i *Installer) PostRefresh() error {
+	err := i.UpdateConfigs()
+	if err != nil {
+		return err
+	}
+
 	return i.ClearVersion()
 }
 
@@ -99,4 +103,8 @@ func (i *Installer) ClearVersion() error {
 
 func (i *Installer) UpdateVersion() error {
 	return cp.Copy(i.NewVersionFile, i.CurrentVersionFile)
+}
+
+func (i *Installer) UpdateConfigs() error {
+	return cp.Copy(path.Join(AppDir, "config"), path.Join(DataDir, "config"))
 }
