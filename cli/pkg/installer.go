@@ -32,7 +32,7 @@ func (i *Installer) Install() error {
 	if err != nil {
 		return err
 	}
-	err = AddUserToGroup(App, "systemd-journal")
+	err = i.AddToUserGroups()
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,12 @@ func (i *Installer) PreRefresh() error {
 }
 
 func (i *Installer) PostRefresh() error {
-	err := i.UpdateConfigs()
+	err := i.AddToUserGroups()
+	if err != nil {
+		return err
+	}
+
+	err = i.UpdateConfigs()
 	if err != nil {
 		return err
 	}
@@ -135,6 +140,18 @@ func (i *Installer) AddMachines() error {
 	output, err := command.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("%w: %s", err, string(output))
+	}
+	return nil
+}
+
+func (i *Installer) AddToUserGroups() error {
+	err := AddUserToGroup(App, "systemd-journal")
+	if err != nil {
+		return err
+	}
+	err = AddUserToGroup(App, "adm")
+	if err != nil {
+		return err
 	}
 	return nil
 }

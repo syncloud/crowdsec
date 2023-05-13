@@ -1,3 +1,4 @@
+source: file
 filenames:
   - /var/log/mail.log
 labels:
