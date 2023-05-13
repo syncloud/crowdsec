@@ -45,7 +45,7 @@ api:
     credentials_path: /var/snap/crowdsec/current/config/crowdsec/local_api_credentials.yaml
   server:
     log_level: info
-    listen_uri: 0.0.0.0:3002
+    listen_uri: 127.0.0.1:3002
     profiles_path: /var/snap/crowdsec/current/config/crowdsec/profiles.yaml
     use_forwarded_for_headers: false
     console_path: /var/snap/crowdsec/current/config/crowdsec/console.yaml
@@ -65,8 +65,8 @@ api:
 #       - bouncers_ou
 #      crl_path: /path/to/file.crl
 #      cache_expiration: 1h
-#prometheus:
-#  enabled: true
-#  level: full
-#  listen_addr: 127.0.0.1
-#  listen_port: 6060
+prometheus:
+  enabled: true
+  level: full
+  listen_addr: 127.0.0.1
+  listen_port: 3003

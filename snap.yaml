@@ -42,7 +42,7 @@ apps:
     command: bin/cli restore-post-start
 
   cscli:
-    command: crowdsec/usr/local/bin/cscli
+    command: crowdsec/usr/local/bin/cscli -c /var/snap/crowdsec/current/config/crowdsec/config.yaml
 
 confinement: strict
 description: Crowdsec

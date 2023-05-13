@@ -78,15 +78,19 @@ def test_access_change_event(device):
 
 
 def test_hub_update(device):
-    device.run_ssh('snap run crowdsec.cscli -c /var/snap/crowdsec/current/config/crowdsec/config.yaml hub update')
+    device.run_ssh('snap run crowdsec.cscli hub update')
 
 
 def test_hub_install(device):
-    device.run_ssh('snap run crowdsec.cscli -c /var/snap/crowdsec/current/config/crowdsec/config.yaml collections install crowdsecurity/dovecot')
+    device.run_ssh('snap run crowdsec.cscli collections install crowdsecurity/dovecot')
 
 
 def test_hub_list(device):
-    device.run_ssh('snap run crowdsec.cscli -c /var/snap/crowdsec/current/config/crowdsec/config.yaml hub list | grep dovecot')
+    device.run_ssh('snap run crowdsec.cscli hub list | grep dovecot')
+
+
+def test_metrics(device):
+    device.run_ssh('snap run crowdsec.cscli metrics')
 
 
 def test_remove(device, app):
