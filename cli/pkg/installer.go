@@ -58,15 +58,9 @@ func (i *Installer) Install() error {
 	if err != nil {
 		return err
 	}
-	command := exec.Command("snap",
-		"run",
-		"crowdsec.cscli",
-		"-c", path.Join(DataDir, "config/crowdsec/config.yaml"),
-		"machines", "add", "-a",
-	)
-	output, err := command.CombinedOutput()
+	err = i.AddMachines()
 	if err != nil {
-		return fmt.Errorf("%w: %s", err, string(output))
+		return err
 	}
 
 	err = i.FixPermissions()
@@ -91,6 +85,11 @@ func (i *Installer) PostRefresh() error {
 	}
 
 	err = i.ClearVersion()
+	if err != nil {
+		return err
+	}
+
+	err = i.AddMachines()
 	if err != nil {
 		return err
 	}
@@ -123,6 +122,19 @@ func (i *Installer) FixPermissions() error {
 	err = Chown(CommonDir, App)
 	if err != nil {
 		return err
+	}
+	return nil
+}
+
+func (i *Installer) AddMachines() error {
+	command := exec.Command("snap",
+		"run",
+		"crowdsec.cscli",
+		"machines", "add", "-a",
+	)
+	output, err := command.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("%w: %s", err, string(output))
 	}
 	return nil
 }
