@@ -15,3 +15,5 @@ cd ${BUILD_DIR}
 docker export crowdsec -o crowdsec.tar
 tar xf crowdsec.tar
 rm -rf crowdsec.tar
+
+ls -la /staging/etc/crowdsec/collections
