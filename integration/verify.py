@@ -93,6 +93,10 @@ def test_metrics(device):
     device.run_ssh('snap run crowdsec.cscli metrics')
 
 
+def test_collections(device):
+    device.run_ssh('snap run crowdsec.cscli collections list | grep linux')
+
+
 def test_remove(device, app):
     response = device.app_remove(app)
     assert response.status_code == 200, response.text

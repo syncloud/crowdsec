@@ -135,7 +135,7 @@ func (i *Installer) AddMachines() error {
 	command := exec.Command("snap",
 		"run",
 		"crowdsec.cscli",
-		"machines", "add", "-a",
+		"machines", "add", "syncloud", "-a",
 	)
 	output, err := command.CombinedOutput()
 	if err != nil {
