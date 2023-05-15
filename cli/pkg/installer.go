@@ -116,7 +116,20 @@ func (i *Installer) UpdateVersion() error {
 }
 
 func (i *Installer) UpdateConfigs() error {
-	return cp.Copy(path.Join(AppDir, "config"), path.Join(DataDir, "config"))
+//	return cp.Copy(path.Join(AppDir, "config"), path.Join(DataDir, "config"))
+
+command := exec.Command(
+ "cp", "-r",
+		path.Join(AppDir, "config"),
+		path.Join(DataDir, "config),
+	)
+	output, err := command.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("%w: %s", err, string(output))
+	}
+	return nil
+
+
 }
 
 func (i *Installer) FixPermissions() error {
