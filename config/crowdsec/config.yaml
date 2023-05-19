@@ -45,7 +45,7 @@ api:
     credentials_path: /var/snap/crowdsec/current/config/crowdsec/local_api_credentials.yaml
   server:
     log_level: info
-    listen_uri: 127.0.0.1:3002
+    listen_uri: /var/snap/crowdsec/current/crowdsec.sock
     profiles_path: /var/snap/crowdsec/current/config/crowdsec/profiles.yaml
     use_forwarded_for_headers: false
     console_path: /var/snap/crowdsec/current/config/crowdsec/console.yaml
