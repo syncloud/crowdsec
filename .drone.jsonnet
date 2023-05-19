@@ -62,8 +62,10 @@ local build(arch, test_ui, dind, java_arch) = [{
                 "wget https://github.com/cyberb/crowdsec/archive/refs/heads/master.tar.gz",
                 "tar xf master.tar.gz",
                 "cd crowdsec-master",
-                "go build -ldflags '-linkmode external -extldflags -static' -o ../../build/snap/crowdsec/usr/local/bin/crowdsec ./cmd/crowdsec",
-                "go build -ldflags '-linkmode external -extldflags -static' -o ../../build/snap/crowdsec/usr/local/bin/cscli ./cmd/crowdsec-cli",
+                "rm ../build/snap/crowdsec/usr/local/bin/crowdsec",
+                "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/crowdsec/usr/local/bin/crowdsec ./cmd/crowdsec",
+                "rm ../build/snap/crowdsec/usr/local/bin/cscli",
+                "go build -ldflags '-linkmode external -extldflags -static' -o ../build/snap/crowdsec/usr/local/bin/cscli ./cmd/crowdsec-cli",
             ],
             volumes: [
                 {
