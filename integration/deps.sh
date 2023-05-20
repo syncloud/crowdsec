@@ -1,7 +1,7 @@
 #!/bin/bash -e
 DIR=$( cd "$( dirname "$0" )" && pwd )
 
-while ! apt-get update; then
+while ! apt-get update; do
   sleep 1
   echo "retry"
 done
