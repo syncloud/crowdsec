@@ -4,6 +4,7 @@ local go = "1.21-bullseye";
 local version = "1.5.1";
 local metabase = "0.46.2";
 local nginx = "1.24.0";
+local deployer = "https://github.com/syncloud/store/releases/download/4/syncloud-release";
 
 local build(arch, test_ui, dind, java_arch) = [{
     kind: "pipeline",
@@ -155,7 +156,7 @@ local build(arch, test_ui, dind, java_arch) = [{
         ]
     },
         {
-            name: "upload",
+        name: "upload",
         image: "debian:buster-slim",
         environment: {
             AWS_ACCESS_KEY_ID: {
@@ -163,20 +164,47 @@ local build(arch, test_ui, dind, java_arch) = [{
             },
             AWS_SECRET_ACCESS_KEY: {
                 from_secret: "AWS_SECRET_ACCESS_KEY"
-            }
+            },
+            SYNCLOUD_TOKEN: {
+                     from_secret: "SYNCLOUD_TOKEN"
+                 }
         },
         commands: [
-          "PACKAGE=$(cat package.name)",
-          "apt update && apt install -y wget",
-          "wget https://github.com/syncloud/snapd/releases/download/1/syncloud-release-" + arch,
-          "chmod +x syncloud-release-*",
-          "./syncloud-release-* publish -f $PACKAGE -b $DRONE_BRANCH"
-         ],
+            "PACKAGE=$(cat package.name)",
+            "apt update && apt install -y wget",
+            "wget " + deployer + "-" + arch + " -O release --progress=dot:giga",
+            "chmod +x release",
+            "./release publish -f $PACKAGE -b $DRONE_BRANCH"
+        ],
         when: {
-            branch: ["stable", "master"],
-            event: [ "push" ]
+            branch: ["stable", "master"]
         }
-        }] + [
+    },
+    {
+            name: "promote",
+            image: "debian:buster-slim",
+            environment: {
+                AWS_ACCESS_KEY_ID: {
+                    from_secret: "AWS_ACCESS_KEY_ID"
+                },
+                AWS_SECRET_ACCESS_KEY: {
+                    from_secret: "AWS_SECRET_ACCESS_KEY"
+                },
+                 SYNCLOUD_TOKEN: {
+                     from_secret: "SYNCLOUD_TOKEN"
+                 }
+            },
+            commands: [
+              "apt update && apt install -y wget",
+              "wget " + deployer + "-" + arch + " -O release --progress=dot:giga",
+              "chmod +x release",
+              "./release promote -n " + name + " -a $(dpkg --print-architecture)"
+            ],
+            when: {
+                branch: ["stable"],
+                event: ["push"]
+            }
+      },
         {
             name: "artifact",
             image: "appleboy/drone-scp:1.6.4",
@@ -268,41 +296,7 @@ local build(arch, test_ui, dind, java_arch) = [{
             temp: {}
         },
       ]
-},
- {
-      kind: "pipeline",
-      type: "docker",
-      name: "promote-" + arch,
-      platform: {
-          os: "linux",
-          arch: arch
-      },
-      steps: [
-      {
-              name: "promote",
-              image: "debian:buster-slim",
-              environment: {
-                  AWS_ACCESS_KEY_ID: {
-                      from_secret: "AWS_ACCESS_KEY_ID"
-                  },
-                  AWS_SECRET_ACCESS_KEY: {
-                      from_secret: "AWS_SECRET_ACCESS_KEY"
-                  }
-              },
-              commands: [
-                "apt update && apt install -y wget",
-                "wget https://github.com/syncloud/snapd/releases/download/1/syncloud-release-" + arch + " -O release --progress=dot:giga",
-                "chmod +x release",
-                "./release promote -n " + name + " -a $(dpkg --print-architecture)"
-              ]
-        }
-       ],
-       trigger: {
-        event: [
-          "promote"
-        ]
-      }
-  }];
+}];
 
 build("amd64", true, "20.10.21-dind", "x64") +
 build("arm64", false, "19.03.8-dind", "aarch64") +
