@@ -4,7 +4,6 @@ local go = "1.21-bullseye";
 local version = "1.5.1";
 local metabase = "0.46.2";
 local nginx = "1.24.0";
-local go = "1.18.2-buster";
 
 local build(arch, test_ui, dind, java_arch) = [{
     kind: "pipeline",
