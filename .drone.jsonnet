@@ -299,5 +299,4 @@ local build(arch, test_ui, dind, java_arch) = [{
 }];
 
 build("amd64", true, "20.10.21-dind", "x64") +
-build("arm64", false, "19.03.8-dind", "aarch64") +
-build("arm", false, "19.03.8-dind", "arm")
+build("arm64", false, "19.03.8-dind", "aarch64")
