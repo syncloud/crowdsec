@@ -2,15 +2,10 @@
 
 DIR=$( cd "$( dirname "$0" )" && pwd )
 cd ${DIR}
-VERSION=$1
 BUILD_DIR=${DIR}/../build/snap/nginx
-while ! docker create --name=nginx nginx:$VERSION ; do
-  sleep 1
-  echo "retry docker"
-done
 mkdir -p ${BUILD_DIR}
-cd ${BUILD_DIR}
-docker export nginx -o app.tar
-tar xf app.tar
-rm -rf app.tar
+cp -a /bin ${BUILD_DIR}/
+cp -a /etc ${BUILD_DIR}/
+cp -a /lib ${BUILD_DIR}/
+cp -a /usr ${BUILD_DIR}/
 cp ${DIR}/nginx.sh ${BUILD_DIR}/bin/
