@@ -53,7 +53,7 @@ api:
       - 127.0.0.1
       - ::1
     online_client: # Crowdsec API
-      #credentials_path: /var/snap/crowdsec/current/config/crowdsec/online_api_credentials.yaml
+      credentials_path: /var/snap/crowdsec/current/config/crowdsec/online_api_credentials.yaml
 #    tls:
 #      cert_file: /etc/crowdsec/ssl/cert.pem
 #      key_file: /etc/crowdsec/ssl/key.pem

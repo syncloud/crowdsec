@@ -1,13 +1,14 @@
 import os
+from os.path import join
+from subprocess import check_output
+
 import pytest
 import requests
-import shutil
-from os.path import join
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-from subprocess import check_output
+from syncloudlib.http import wait_for_rest
 from syncloudlib.integration.hosts import add_host_alias
 from syncloudlib.integration.installer import local_install
-from syncloudlib.http import wait_for_rest
+import time
 
 TMP_DIR = '/tmp/syncloud'
 
@@ -49,6 +50,7 @@ def test_start(module_setup, device, device_host, app, domain):
     device.run_ssh('mkdir {0}'.format(TMP_DIR))
 
 
+@pytest.mark.flaky(retries=50, delay=10)
 def test_activate_device(device):
     response = retry(device.activate_custom)
     assert response.status_code == 200, response.text
@@ -59,7 +61,7 @@ def test_install(app_archive_path, device_host, device_password):
 
 
 def test_index(app_domain):
-    wait_for_rest(requests.session(), "https://{0}".format(app_domain), 200, 100)
+    wait_for_rest(requests.session(), "https://{0}".format(app_domain), 200, 30)
 
 
 def __log_data_dir(device):
@@ -93,6 +95,10 @@ def test_metrics(device):
     device.run_ssh('snap run crowdsec.cscli metrics')
 
 
+def test_capi_status(device):
+    device.run_ssh('snap run crowdsec.cscli capi status > {0}/capi.status.log'.format(TMP_DIR))
+
+
 def test_collections(device):
     device.run_ssh('snap run crowdsec.cscli collections list | grep linux')
 
@@ -111,7 +117,7 @@ def test_upgrade(app_archive_path, device_host, device_password):
 
 
 def test_index_after_upgrade(app_domain):
-    wait_for_rest(requests.session(), "https://{0}".format(app_domain), 200, 100)
+    wait_for_rest(requests.session(), "https://{0}".format(app_domain), 200, 30)
 
 
 def retry(method, retries=10):

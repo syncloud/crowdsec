@@ -68,6 +68,11 @@ func (i *Installer) Install() error {
 		return err
 	}
 
+	err = i.RegisterCAPI()
+	if err != nil {
+		return err
+	}
+
 	err = i.FixPermissions()
 	if err != nil {
 		return err
@@ -90,6 +95,11 @@ func (i *Installer) PostRefresh() error {
 	}
 
 	err = i.UpdateConfigs()
+	if err != nil {
+		return err
+	}
+
+	err = i.RegisterCAPI()
 	if err != nil {
 		return err
 	}
@@ -147,7 +157,28 @@ func (i *Installer) AddMachines() error {
 	command := exec.Command("snap",
 		"run",
 		"crowdsec.cscli",
-		"machines", "add", "syncloud", "-a",
+		"machines", "add", "syncloud", "-a", "--force",
+	)
+	output, err := command.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("%w: %s", err, string(output))
+	}
+	return nil
+}
+
+func (i *Installer) RegisterCAPI() error {
+	status := exec.Command("snap",
+		"run",
+		"crowdsec.cscli",
+		"capi", "status",
+	)
+	if err := status.Run(); err == nil {
+		return nil
+	}
+	command := exec.Command("snap",
+		"run",
+		"crowdsec.cscli",
+		"capi", "register",
 	)
 	output, err := command.CombinedOutput()
 	if err != nil {

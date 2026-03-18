@@ -1,8 +1,10 @@
-import pytest
+import time
 from os.path import dirname, join
+from subprocess import check_output
+
+import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from subprocess import check_output
 from syncloudlib.integration.hosts import add_host_alias
 
 DIR = dirname(__file__)
@@ -10,8 +12,8 @@ TMP_DIR = '/tmp/syncloud/ui'
 
 
 @pytest.fixture(scope="session")
-def module_setup(request, device, artifact_dir, ui_mode):
-    def module_teardown():
+def module_setup(request, device, artifact_dir, ui_mode, driver, selenium):
+    def teardown():
         device.activated()
         device.run_ssh('mkdir -p {0}'.format(TMP_DIR), throw=False)
         device.run_ssh('journalctl > {0}/journalctl.ui.{1}.log'.format(TMP_DIR, ui_mode), throw=False)
@@ -19,7 +21,7 @@ def module_setup(request, device, artifact_dir, ui_mode):
         check_output('cp /videos/* {0}'.format(artifact_dir), shell=True)
         check_output('chmod -R a+r {0}'.format(artifact_dir), shell=True)
 
-    request.addfinalizer(module_teardown)
+    request.addfinalizer(teardown)
 
 
 def test_start(module_setup, app, domain, device_host):
@@ -28,15 +30,10 @@ def test_start(module_setup, app, domain, device_host):
 
 def test_login(selenium, device_user, device_password):
     selenium.open_app()
-    selenium.find_by_xpath("//input[@name='username']").send_keys(device_user)
-    password = selenium.find_by_xpath("//input[@name='password']")
+    selenium.find_by(By.XPATH, "//input[@name='username']").send_keys(device_user)
+    password = selenium.find_by(By.XPATH, "//input[@name='password']")
     password.send_keys(device_password)
     selenium.screenshot('login')
     password.send_keys(Keys.RETURN)
-    selenium.find_by_xpath("//div[contains(.,'CS Dashboard')]")
+    selenium.find_by(By.XPATH, "//div[contains(.,'CS Dashboard')]")
     selenium.screenshot('main')
-
-
-def test_teardown(driver):
-    driver.quit()
-
