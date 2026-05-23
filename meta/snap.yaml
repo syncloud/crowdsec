@@ -48,7 +48,7 @@ apps:
     command: crowdsec/usr/local/bin/cscli -c /var/snap/crowdsec/current/config/crowdsec/config.yaml
 
 confinement: strict
-description: Crowdsec
+description: Intrusion prevention system
 grade: stable
 name: crowdsec
 summary: Crowdsec
