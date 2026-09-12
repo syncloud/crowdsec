@@ -168,7 +168,7 @@ local build(arch, test_ui, java_arch) = [{
       },
       command: ['snap', '-c', '${DRONE_BRANCH}'],
       when: {
-        branch: ['master', 'stable'],
+        branch: ['stable'],
         event: ['push'],
       },
     },
