@@ -198,7 +198,6 @@ local build(arch, test_ui, java_arch) = [{
   trigger: {
     event: [
       'push',
-      'pull_request',
     ],
   },
   services: [
