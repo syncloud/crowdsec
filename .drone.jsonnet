@@ -2,7 +2,7 @@ local name = 'crowdsec';
 local browser = 'chrome';
 local version = '1.7.6';
 local metabase = '0.46.2';
-local nginx = '1.24.0';
+local nginx = '1.30.7';
 local debian = 'bookworm-slim';
 local platforms = {
   bookworm: '26.03',
